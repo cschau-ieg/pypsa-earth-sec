@@ -21,7 +21,7 @@ scenario:
   clusters: [10]
   opts: [Co2L1-144H]
 
-countries: ["MA"]
+countries: ["BR"]
 # Can be replaced by country ["NG", "BJ"], continent ["Africa"] or user-specific region, see more at https://pypsa-earth.readthedocs.io/en/latest/configuration.html#top-level-configuration
 
 snapshots:
@@ -103,6 +103,7 @@ build_osm_network:  # Options of the build_osm_network script; osm = OpenStreetM
   group_tolerance_buses: 500  # [m] (default 500) Tolerance in meters of the close buses to merge
   split_overpassing_lines: true  # When True, lines overpassing buses are splitted and connected to the bueses
   overpassing_lines_tolerance: 1  # [m] (default 1) Tolerance to identify lines overpassing buses
+  force_ac: true  # When true, it forces all components (lines and substation) to be AC-only. To be used if DC assets create problem.
 
 base_network:
   min_voltage_substation_offshore: 35000  # [V] minimum voltage of the offshore substations

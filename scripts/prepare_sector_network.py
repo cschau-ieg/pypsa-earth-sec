@@ -1073,7 +1073,8 @@ def add_industry(n, costs):
     # CARRIER = FOSSIL GAS
 
     nodes = (
-        pop_layout.index
+        #pop_layout.index
+        n.buses.loc[n.buses.carrier == 'AC'].index
     )  # TODO where to change country code? 2 letter country codes.
 
     # industrial_demand['TWh/a (MtCO2/a)'] = industrial_demand['TWh/a (MtCO2/a)'].apply(
@@ -1476,8 +1477,8 @@ def create_nodes_for_heat_sector():
     urban_fraction = pop_layout.urban / pop_layout[["rural", "urban"]].sum(axis=1)
 
     for sector in sectors:
-        nodes[sector + " rural"] = pop_layout.index
-        nodes[sector + " urban decentral"] = pop_layout.index
+        nodes[sector + " rural"] = n.buses.loc[n.buses.carrier == 'AC'].index # TODO #pop_layout.index
+        nodes[sector + " urban decentral"] = n.buses.loc[n.buses.carrier == 'AC'].index # TODO #pop_layout.index
 
     # maximum potential of urban demand covered by district heating
     central_fraction = options["district_heating"]["potential"]
@@ -1487,7 +1488,7 @@ def create_nodes_for_heat_sector():
         * pop_layout["urban_ct_fraction"]
         / pop_layout["fraction"]
     )
-    nodes["urban central"] = dist_fraction_node.index
+    nodes["urban central"] =  n.buses.loc[n.buses.carrier == 'AC'].index #dist_fraction_node.index # TODO
     # if district heating share larger than urban fraction -> set urban
     # fraction to district heating share
     urban_fraction = pd.concat([urban_fraction, dist_fraction_node], axis=1).max(axis=1)
@@ -2141,7 +2142,7 @@ if __name__ == "__main__":
         snakemake = mock_snakemake(
             "prepare_sector_network",
             simpl="",
-            clusters="16",
+            clusters="30",
             ll="c1.0",
             opts="Co2L",
             planning_horizons="2030",
@@ -2189,7 +2190,7 @@ if __name__ == "__main__":
     )
 
     # Define spatial for biomass and co2. They require the same spatial definition
-    define_spatial(pop_layout.index)
+    define_spatial(nodes)
 
     # TODO logging
 
